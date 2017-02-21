@@ -1,0 +1,31 @@
+section.new-tweet {
+  margin-top: 120px;
+  border: 2px solid #cccccc;
+  border-radius: 12px;
+  background-color: #eee;
+  font-family: "Roboto Condensed", sans-serif;
+  box-sizing: border-box;
+  padding: 1em;
+}
+.new-tweet h2 {
+  font-weight: bold;
+  position: relative;
+  bottom: 20px;
+  margin-left: 7px;
+  margin-right: 7px;
+  border-bottom: 2px solid black;
+}
+/*character counter*/
+.new-tweet .counter {
+  float: right;
+  vertical-align: baseline;
+}
+
+/*text input box*/
+form textarea {
+  width: 100%;
+  background-color: #ffffff;
+  margin: 0px auto;
+  padding: 3px;
+  font-weight: 200;
+}
