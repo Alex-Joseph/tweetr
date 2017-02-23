@@ -1,5 +1,5 @@
-section.new-tweet {
-  margin-top: 120px;
+.new-tweet {
+  margin-top: 80px 0 12px;
   border: 2px solid #cccccc;
   border-radius: 12px;
   background-color: #eee;
@@ -20,6 +20,9 @@ section.new-tweet {
   float: right;
   vertical-align: baseline;
 }
+.red-text {
+  color: red;
+}
 
 /*text input box*/
 form textarea {
@@ -28,4 +31,5 @@ form textarea {
   margin: 0px auto;
   padding: 3px;
   font-weight: 200;
+  height: 4.5em;
 }

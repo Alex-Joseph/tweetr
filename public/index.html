@@ -2,7 +2,9 @@
 <html lang="en">
   <head>
     <!-- Meta Information -->
-    <title>Tweeter - Home Page</title>
+    <title>
+      Tweeter - Home Page
+    </title>
 
     <!-- External CSS -->
     <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
@@ -11,9 +13,12 @@
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
     <link rel="stylesheet" href="/styles/new-tweet.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/tweet-container.css" type="text/css" />
+    <link rel="stylesheet" href="/images/font-awesome-4.7.0/css/font-awesome.min.css">
+
     <!-- External JS -->
     <script type="text/javascript" src="/vendor/jquery-2.2.3.min.js"></script>
-
+    <script type="text/javascript" src="/scripts/composer-char-counter.js"></script>
     <!-- App JS -->
     <script type="text/javascript" src="/scripts/app.js"></script>
   </head>
@@ -23,20 +28,37 @@
     <!-- Top nav bar (fixed) -->
     <nav id="nav-bar">
       <img class="logo" src="/images/bird.png">
-      <span class="header">Tweeter</span>
+      <span class="header">
+        Tweeter
+      </span>
+        <button id="compose-button" type="button" name="button">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          Compose
+        </button>
     </nav>
 
     <!-- Page-specific (main) content here -->
     <main class="container">
       <section class="new-tweet">
-        <h2>Compose Tweet</h2>
-        <form method="POST" action="/tweets">
-          <textarea name="text" placeholder="What are you humming about?"></textarea>
+        <h2>
+          Compose Tweet
+        </h2>
+        <form id="tweetForm" method="POST" action="/tweets">
+          <textarea id="tweet" name="text" type="text" placeholder="What are you humming about?">
+          </textarea>
           <input type="submit" value="Tweet">
-          <span class="counter">140</span>
+          <span id="charCounter" class="counter">
+            140
+          </span>
         </form>
       </section>
-
+      <section class="tweet-container">
+        <!-- <article class="sent-tweets">
+          <header><img src="/images/leafs.png"><h2>Bill Fields</h2><h5>@MrFields</h5></header>
+          <div class="tweet-body">Tweet here</div>
+          <footer>10 days ago</footer>
+        </article> -->
+      </section>
     </main>
   </body>
 </html>
