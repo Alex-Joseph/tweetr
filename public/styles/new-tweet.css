@@ -33,11 +33,11 @@ form textarea {
   font-weight: 200;
   height: 4.5em;
 }
-#footer-buttons {
+#footer-buttons, #likes-button {
   display: none;
   color: #75c9bc;
   float: right;
 }
-.sent-tweets:hover #footer-buttons {
+.sent-tweets:hover #footer-buttons, #likes-button {
   display:inline;
 }

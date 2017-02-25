@@ -4,9 +4,9 @@
 function renderTweets(tweets) {
   let sortedTweets = tweets.sort( (a, b) => {
     return b.created_at - a.created_at;
-  }); //nees to sort by date!!!
+  });
   let tweetString = ``;
-  tweets.map( (tweet) => {
+  sortedTweets.map( (tweet) => {
     tweetString += createTweetElement(tweet);
   })
   return tweetString;
@@ -21,20 +21,15 @@ function timeDifference(current, previous) {
   let elapsed = current - previous;
   if (elapsed < msPerMinute) {
       return Math.round(elapsed/1000) + ' seconds ago';
-  }
-  else if (elapsed < msPerHour) {
+  } else if (elapsed < msPerHour) {
       return Math.round(elapsed/msPerMinute) + ' minutes ago';
-  }
-  else if (elapsed < msPerDay ) {
+  } else if (elapsed < msPerDay ) {
       return Math.round(elapsed/msPerHour ) + ' hours ago';
-  }
-  else if (elapsed < msPerMonth) {
+  } else if (elapsed < msPerMonth) {
      return 'approximately ' + Math.round(elapsed/msPerDay) + ' days ago';
-  }
-  else if (elapsed < msPerYear) {
+  } else if (elapsed < msPerYear) {
      return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months ago';
-  }
-  else {
+  } else {
      return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';
   }
 }
@@ -44,7 +39,9 @@ function createTweetElement(tweet) {
   let photo = tweet.user.avatars.small;
   let userHandle = tweet.user.handle;
   let tweetText = tweet.content.text;
-  let timeStamp = timeDifference(Date.now(), tweet.created_at)
+  let timeStamp = timeDifference(Date.now(), tweet.created_at);
+  let likes = tweet.likes ? tweet.likes : "";
+  let tweetId = tweet._id;
   let html = `<article class="sent-tweets">
                 <header>
                   <img src=${photo}><h2>${userName}</h2><h5>${userHandle}</h5>
@@ -57,7 +54,9 @@ function createTweetElement(tweet) {
                   <div id="footer-buttons">
                     <a><i class="fa fa-flag" aria-hidden="true"></i></a>
                     <a><i class="fa fa-retweet" aria-hidden="true"></i></a>
-                    <a><i class="fa fa-heart" aria-hidden="true"></i></a>
+                    <a class="likes-button" data-tweetId="${tweetId}" data-likes="${likes}" data-likeStatus="false">
+                      <i class="fa fa-heart" aria-hidden="true">${likes}</i>
+                    </a>
                   </div>
                 </footer>
               </article>`;
@@ -71,25 +70,43 @@ function loadTweets () {
     success: (data) => {
       $('.tweet-container').empty();
       $('.tweet-container').prepend(renderTweets(data));
-    }
-  })
-};
 
-function printTweet () {
-  $.ajax({
-    method: 'GET',
-    url: "/tweets",
-    success: (data) => {
-      $('.tweet-container').prepend(renderTweets([data[data.length-1]]));
+      $( ".likes-button" ).click(function(ev) {
+        // ev.stopPropagation();
+        // ev.preventDefault();
+        let likeStatus = $(ev.target).closest('a').data("likestatus");
+        let likes = $(ev.target).closest('a').val()
+        let tweetId = $(ev.target).closest('a').data("tweetid");
+          if ( !likeStatus ) {
+            $.ajax({
+              method: 'POST',
+              url: `/likes`,
+              data: { tweetId: tweetId},
+              success: loadTweets()
+            })
+            .done((response) => {
+            })
+            .fail(console.error);
+        }
+      })
     }
   })
-};
+}
+/* The like button: *** new tweets have likes value
+1. add like: <value> to the DB for each item...done
+2. logic to display num of likes if > 0
+3. Need to toggle like button (like/unlike) along with color change
+4. ajax get request to get num of likes
+5. ajax post to update like count
+
+*/
 
 $(document).ready( () => {
 
   loadTweets();
 
   $( "#compose-button" ).click( () => {
+    $("#tweet").empty();
     $( ".new-tweet" ).slideToggle( "fast" );
     $("#tweet").focus();
   });
@@ -111,7 +128,7 @@ $(document).ready( () => {
       data: newTweet
     })
     .done((response) => {
-      printTweet()
+      loadTweets()
       console.log('new post created!', response);
       $('#tweet').val("");
       $("#charCounter").text("140");

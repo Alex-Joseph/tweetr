@@ -1,5 +1,5 @@
 "use strict";
-
+const ObjectId = require('mongodb').ObjectID;
 // Simulates the kind of delay we see with network or filesystem operations
 // Defines helper functions for saving and getting tweets, using the database `db`
 module.exports = function makeDataHelpers(db) {
@@ -17,6 +17,12 @@ module.exports = function makeDataHelpers(db) {
         }
         callback(null, tweets);
       });
+    },
+
+    updateLikes: function(tweetId, callback) {
+      console.log("inside updateLikes");
+      console.log(tweetId);
+      db.collection("tweets").findOneAndUpdate({"_id": ObjectId(tweetId)}, {$inc: {"likes": 1 } })
     }
   };
 };

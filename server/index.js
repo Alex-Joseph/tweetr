@@ -23,6 +23,18 @@ const db = MongoClient.connect(MONGODB_URI, (err, db) => {
   const tweetsRoutes = require("./routes/tweets")(DataHelpers);
   app.use("/tweets", tweetsRoutes);
 
+  app.post("/likes", function(req, res) {
+    const tweetId = req.body.tweetId
+    console.log("req.body:", req.body);
+    DataHelpers.updateLikes(tweetId, (err) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.status(201).send();
+      }
+    });
+  });
+
 });
 
 app.listen(PORT, () => {
